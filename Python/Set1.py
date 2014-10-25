@@ -2,6 +2,7 @@
 import base64
 import array
 import string
+from collections import Counter
 #challenge 1
 def hex_to_base64(hexString):
     decodedHex = hexString.decode("hex")
@@ -20,18 +21,23 @@ def fixedXOR(hexString1, hexString2):
     return encodedXOR
 #challenge 3
 def breakSingleByteCipher(hexString):
-    freq = dict()
-    for char in string.printable:
-        hexChar = char.encode("hex") #get the ascii character to a hex
-        
-        
-        
-        stringXOR = hexXOR.decode("hex")
-        print stringXOR
-        for char in stringXOR:
-            freq[char] += 1
-        eFreq = (freq[e] + freq[E])/len(hexXor)
-        print eFreq
-       #if (eFreq > 10 and eFreq < 15)
+    decodedHex = hexString.decode("hex")
+    bytes = array.array("B", decodedHex)
+    
+    charsToCheck = string.printable
+    charsToCheckArr = array.array("B", string.printable)
+    bestCandidateList = []
+    for char in charsToCheckArr:
+        combo = array.array("B")
+        for b in bytes:
+            combo.append(b ^ char)
+        xorString = combo.tostring()
+        xorString = xorString.encode("ascii")
+        #print "XORSTRING ", xorString, " XORSTRING", char
+        freqs = Counter(xorString.split())
+        bestCandidateList.append((char, len(freqs), xorString))
+    bestCandidateList = sorted(bestCandidateList, key=lambda length:length[1], reverse=True)
+    for cand, x in zip(bestCandidateList, range(8)):
+        print "CHAR:", cand[0], "\nSTRING:", cand[2]
         
 print breakSingleByteCipher("1b37373331363f78151b7f2b783431333d78397828372d363c78373e783a393b3736")
