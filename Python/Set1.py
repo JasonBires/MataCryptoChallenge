@@ -39,5 +39,5 @@ def breakSingleByteCipher(hexString):
     bestCandidateList = sorted(bestCandidateList, key=lambda length:length[1], reverse=True)
     for cand, x in zip(bestCandidateList, range(8)):
         print "CHAR:", cand[0], "\nSTRING:", cand[2]
-        
+#Cookin' MCs like a pound of bacon        
 print breakSingleByteCipher("1b37373331363f78151b7f2b783431333d78397828372d363c78373e783a393b3736")
